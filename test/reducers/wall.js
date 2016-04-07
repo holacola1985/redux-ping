@@ -4,6 +4,15 @@ import { expect } from 'chai';
 
 describe('wall reducer', () => {
 
+  function aggregateMultipleTimes(n){
+    var state;
+    for(var i=0; i<n; i++){
+      state = wall(state, aggregate({
+        text: 'hello ' + i
+      }));
+    }
+    return state;
+  }
 
   it('should be initialize with empty array ', () => {
     expect(wall(undefined, {
@@ -45,15 +54,17 @@ describe('wall reducer', () => {
   });
 
   it('should aggregate over the limit', () => {
-    var state;
-    for(var i=0; i<15; i++){
-      state = wall(state, aggregate({
-        text: 'hello ' + i
-      }));
-    }
-    expect(state.items).to.has.length(10);
+    const state = aggregateMultipleTimes(15);
+    expect(state.items).to.have.length(10);
     expect(state.items[0].text).to.be.equal('hello 5');
     expect(state.items[9].text).to.be.equal('hello 14');
+  });
+
+  it('should truncate when set size inferior to the current state', () => {
+    const state = wall(aggregateMultipleTimes(10), setSize(5));
+    expect(state.items).to.have.length(5);
+    expect(state.items[0].text).to.be.equal('hello 5');
+    expect(state.items[4].text).to.be.equal('hello 9');
   });
 
 });
