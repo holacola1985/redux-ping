@@ -1,13 +1,13 @@
 import wall from '../../src/reducers/wall';
-import {aggregate} from '../../src/actions/wall';
-import {expect} from 'chai';
+import { aggregate, setSize } from '../../src/actions/wall';
+import { expect } from 'chai';
 
 describe('wall reducer', () => {
 
 
   it('should be initialize with empty array ', () => {
     expect(wall(undefined, {
-      type: 'UNKNOW'  
+      type: 'UNKNOW'
     })).to.be.deep.equal({
       size: 10,
       items: []
@@ -38,6 +38,22 @@ describe('wall reducer', () => {
         text: 'hello2'
       }
     ]);
+  });
+
+  it('should set size', () => {
+    expect(wall(undefined, setSize(5)).size).to.be.equal(5);
+  });
+
+  it('should aggregate over the limit', () => {
+    var state;
+    for(var i=0; i<15; i++){
+      state = wall(state, aggregate({
+        text: 'hello ' + i
+      }));
+    }
+    expect(state.items).to.has.length(10);
+    expect(state.items[0].text).to.be.equal('hello 5');
+    expect(state.items[9].text).to.be.equal('hello 14');
   });
 
 });

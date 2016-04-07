@@ -8,10 +8,12 @@ const defaultState = {
 export default function wall(state = defaultState, action) {
   switch (action.type) {
     case SET_SIZE:
-      return state;
+      return Object.assign({}, state, {
+        size: action.size
+      });
     case AGGREGATE:
       return Object.assign({}, state, {
-        items: [...state.items, action.post]
+        items: [...state.items.slice(-state.size + 1), action.post]
       });
     default:
       return state;
