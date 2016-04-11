@@ -10,6 +10,10 @@ const defaultState = {
     items: [],
     aggregated: 0
   },
+  facebook: {
+    items: [],
+    aggregated: 0
+  },
   size: 10
 };
 
@@ -28,9 +32,10 @@ function aggregate(post, state) {
   };
 
   if (type && POST_TYPES.has(type)) {
+    const {aggregated, items} = state[type];
     newState[type] = {
-      aggregated: state.twitter.aggregated + 1,
-      items: [...state.twitter.items.slice(-state.size + 1), post]
+      aggregated: aggregated + 1,
+      items: [...items.slice(-state.size + 1), post]
     };
   }
   return newState;

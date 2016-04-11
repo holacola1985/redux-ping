@@ -1,7 +1,9 @@
 import reducer from '../../src/reducers/wall';
 import { aggregate } from '../../src/actions/wall';
-import { all, twitter } from '../../src/selectors/wall';
+import selectors from '../../src/selectors/wall';
 import { expect } from 'chai';
+
+const {all} = selectors;
 
 describe('wall selectors', () => {
   function aggregateMultipleTimes(n, type) {
@@ -45,11 +47,11 @@ describe('wall selectors', () => {
 
   });
 
-  ['twitter'].forEach(type => {
+  ['twitter', 'facebook'].forEach(type => {
     describe(type, () => {
       it('should rewrite the full array for ' + type + ' 2 times', () => {
         const state = aggregateMultipleTimes(22, type);
-        const projection = twitter(state);
+        const projection = selectors[type](state);
         expect(projection[0].text).to.be.equal('hello 20');
         expect(projection[1].text).to.be.equal('hello 21');
       });
