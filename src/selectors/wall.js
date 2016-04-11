@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect';
 
-
 const getSize = state => state.size;
 
 const getAllItems = state => state.all.items;
@@ -17,9 +16,9 @@ function shift(items, aggregated, size) {
   ];
 }
 
-const staticPosition = createSelector([getAllItems, getAllAggregated, getSize], shift);
-const twitterStaticPosition = createSelector([
+const all = createSelector([getAllItems, getAllAggregated, getSize], shift);
+const twitter = createSelector([
   getTwitterItems, getTwitterAggregated, getSize
 ], shift);
 
-export { staticPosition, twitterStaticPosition };
+export { all, twitter };

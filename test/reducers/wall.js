@@ -58,22 +58,24 @@ describe('wall reducer', () => {
     expect(state.all.items[4].text).to.be.equal('hello 9');
   });
 
-  describe('twitter', () => {
+  ['twitter'].forEach(type => {
+    describe(type, () => {
 
-    it('should aggregate one item', () => {
-      const result = wall(undefined, aggregate({
-        twp_source: 'twitter',
-        text: 'hello'
-      }));
-      expect(result.twitter.aggregated).to.be.equal(1);
-      expect(result.twitter.items[0].text).to.be.equal('hello');
-    });
+      it('should aggregate one item', () => {
+        const result = wall(undefined, aggregate({
+          twp_source: type,
+          text: 'hello'
+        }));
+        expect(result[type].aggregated).to.be.equal(1);
+        expect(result[type].items[0].text).to.be.equal('hello');
+      });
 
-    it('should aggregate 2 items', () => {
-      const result = aggregateMultipleTimes(2, 'twitter');
-      expect(result.twitter.aggregated).to.be.equal(2);
-      expect(result.twitter.items[0].text).to.be.equal('hello 0');
-      expect(result.twitter.items[1].text).to.be.equal('hello 1');
+      it('should aggregate 2 items', () => {
+        const result = aggregateMultipleTimes(2, type);
+        expect(result[type].aggregated).to.be.equal(2);
+        expect(result[type].items[0].text).to.be.equal('hello 0');
+        expect(result[type].items[1].text).to.be.equal('hello 1');
+      });
     });
   });
 

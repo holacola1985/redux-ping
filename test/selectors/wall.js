@@ -1,6 +1,6 @@
 import reducer from '../../src/reducers/wall';
 import { aggregate } from '../../src/actions/wall';
-import { staticPosition, twitterStaticPosition } from '../../src/selectors/wall';
+import { all, twitter } from '../../src/selectors/wall';
 import { expect } from 'chai';
 
 describe('wall selectors', () => {
@@ -15,42 +15,44 @@ describe('wall selectors', () => {
     return state;
   }
 
-  describe('staticPosition', () => {
+  describe('all', () => {
 
     it('should cache result', () => {
       const state = aggregateMultipleTimes(11);
-      const projection1 = staticPosition(state);
-      const projection2 = staticPosition(state);
+      const projection1 = all(state);
+      const projection2 = all(state);
       expect(projection1 === projection2).to.be.true;
     });
 
     it('should rewrite first item', () => {
       const state = aggregateMultipleTimes(11);
-      expect(staticPosition(state)[0].text).to.be.equal('hello 10');
+      expect(all(state)[0].text).to.be.equal('hello 10');
     });
 
     it('should rewrite two item', () => {
       const state = aggregateMultipleTimes(12);
-      const projection = staticPosition(state);
+      const projection = all(state);
       expect(projection[0].text).to.be.equal('hello 10');
       expect(projection[1].text).to.be.equal('hello 11');
     });
 
     it('should rewrite the full array 2 time', () => {
       const state = aggregateMultipleTimes(22);
-      const projection = staticPosition(state);
+      const projection = all(state);
       expect(projection[0].text).to.be.equal('hello 20');
       expect(projection[1].text).to.be.equal('hello 21');
     });
 
   });
 
-  describe('twitterStaticPosition', () => {
-    it('should rewrite the full array for twitter 2 times', () => {
-      const state = aggregateMultipleTimes(22, 'twitter');
-      const projection = twitterStaticPosition(state);
-      expect(projection[0].text).to.be.equal('hello 20');
-      expect(projection[1].text).to.be.equal('hello 21');
+  ['twitter'].forEach(type => {
+    describe(type, () => {
+      it('should rewrite the full array for ' + type + ' 2 times', () => {
+        const state = aggregateMultipleTimes(22, type);
+        const projection = twitter(state);
+        expect(projection[0].text).to.be.equal('hello 20');
+        expect(projection[1].text).to.be.equal('hello 21');
+      });
     });
   });
 
