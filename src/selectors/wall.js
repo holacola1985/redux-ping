@@ -2,15 +2,6 @@ import { createSelector } from 'reselect';
 
 const getSize = state => state.size;
 
-const getAllItems = state => state.all.items;
-const getAllAggregated = state => state.all.aggregated;
-
-const getTwitterItems = state => state.twitter.items;
-const getTwitterAggregated = state => state.twitter.aggregated;
-
-const getFacebookItems = state => state.facebook.items;
-const getFacebookAggregated = state => state.facebook.aggregated;
-
 function shift(items, aggregated, size) {
   const shift = aggregated % size;
   return [
@@ -19,16 +10,12 @@ function shift(items, aggregated, size) {
   ];
 }
 
-const all = createSelector([getAllItems, getAllAggregated, getSize], shift);
-const twitter = createSelector([
-  getTwitterItems, getTwitterAggregated, getSize
-], shift);
-const facebook = createSelector([
-  getFacebookItems, getFacebookAggregated, getSize
-], shift);
+const pack = {};
 
-export default {
-  all,
-  twitter,
-  facebook
-};
+['all', 'twitter', 'facebook'].forEach(type => {
+  const getItems = state => state[type].items;
+  const getAggregated = state => state[type].aggregated;
+  pack[type] = createSelector([getItems, getAggregated, getSize], shift);
+});
+
+export default pack;

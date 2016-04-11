@@ -1,26 +1,25 @@
 /* global Set */
 import { SET_SIZE, AGGREGATE } from '../actions/wall';
 
-const defaultState = {
+const SUPPORTED_TYPES = ['twitter', 'facebook', 'instagram'];
+const POST_TYPES = new Set();
+
+var defaultState = {
   all: {
-    items: [],
-    aggregated: 0
-  },
-  twitter: {
-    items: [],
-    aggregated: 0
-  },
-  facebook: {
     items: [],
     aggregated: 0
   },
   size: 10
 };
 
-const POST_TYPES = new Set();
-POST_TYPES.add('twitter');
-POST_TYPES.add('facebook');
-POST_TYPES.add('instagram');
+SUPPORTED_TYPES.forEach(type => {
+  defaultState[type] = {
+    items: [],
+    aggregated: 0
+  };
+  POST_TYPES.add(type);
+});
+
 
 function aggregate(post, state) {
   const type = post.twp_source;
