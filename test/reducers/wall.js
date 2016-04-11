@@ -17,10 +17,7 @@ describe('wall reducer', () => {
   it('should be initialize with empty array ', () => {
     expect(wall(undefined, {
       type: 'UNKNOW'
-    })).to.be.deep.equal({
-      size: 10,
-      items: []
-    });
+    }).items).to.be.deep.equal([]);
   });
 
   it('should aggregate one item', () => {
