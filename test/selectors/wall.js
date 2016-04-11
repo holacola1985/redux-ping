@@ -1,4 +1,5 @@
 import reducer from '../../src/reducers/wall';
+import { POST_TYPES } from '../../src/postTypes';
 import { aggregate } from '../../src/actions/wall';
 import selectors from '../../src/selectors/wall';
 import { expect } from 'chai';
@@ -47,7 +48,7 @@ describe('wall selectors', () => {
 
   });
 
-  ['twitter', 'facebook', 'instagram'].forEach(type => {
+  POST_TYPES.forEach(type => {
     describe(type, () => {
       it('should rewrite the full array for ' + type + ' 2 times', () => {
         const state = aggregateMultipleTimes(22, type);

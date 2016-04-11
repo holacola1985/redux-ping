@@ -1,3 +1,4 @@
+import {POST_TYPES} from '../postTypes';
 import { createSelector } from 'reselect';
 
 const getSize = state => state.size;
@@ -12,7 +13,7 @@ function shift(items, aggregated, size) {
 
 const pack = {};
 
-['all', 'twitter', 'facebook', 'instagram'].forEach(type => {
+['all', ...POST_TYPES ].forEach(type => {
   const getItems = state => state[type].items;
   const getAggregated = state => state[type].aggregated;
   pack[type] = createSelector([getItems, getAggregated, getSize], shift);

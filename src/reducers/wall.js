@@ -1,8 +1,8 @@
 /* global Set */
+import { POST_TYPES } from '../postTypes';
 import { SET_SIZE, AGGREGATE } from '../actions/wall';
 
-const SUPPORTED_TYPES = ['twitter', 'facebook', 'instagram'];
-const POST_TYPES = new Set();
+const supportedTypes = new Set();
 
 var defaultState = {
   all: {
@@ -12,12 +12,12 @@ var defaultState = {
   size: 10
 };
 
-SUPPORTED_TYPES.forEach(type => {
+POST_TYPES.forEach(type => {
   defaultState[type] = {
     items: [],
     aggregated: 0
   };
-  POST_TYPES.add(type);
+  supportedTypes.add(type);
 });
 
 
@@ -30,7 +30,7 @@ function aggregate(post, state) {
     }
   };
 
-  if (type && POST_TYPES.has(type)) {
+  if (type && supportedTypes.has(type)) {
     const {aggregated, items} = state[type];
     newState[type] = {
       aggregated: aggregated + 1,
