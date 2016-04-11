@@ -23,24 +23,20 @@ describe('wall selectors', () => {
       expect(projection1 === projection2).to.be.true;
     });
 
-
     it('should rewrite first item', () => {
       const state = aggregateMultipleTimes(11);
-      expect(state.items[9].text).to.be.equal('hello 10');
       expect(staticPosition(state)[0].text).to.be.equal('hello 10');
     });
 
     it('should rewrite two item', () => {
       const state = aggregateMultipleTimes(12);
-      expect(state.items[9].text).to.be.equal('hello 11');
       const projection = staticPosition(state);
       expect(projection[0].text).to.be.equal('hello 10');
       expect(projection[1].text).to.be.equal('hello 11');
     });
 
-    it('should rewrite all all the array 2 time', () => {
+    it('should rewrite the full array 2 time', () => {
       const state = aggregateMultipleTimes(22);
-      expect(state.items[9].text).to.be.equal('hello 21');
       const projection = staticPosition(state);
       expect(projection[0].text).to.be.equal('hello 20');
       expect(projection[1].text).to.be.equal('hello 21');

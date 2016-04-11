@@ -17,13 +17,15 @@ describe('wall reducer', () => {
   it('should be initialize with empty array ', () => {
     expect(wall(undefined, {
       type: 'UNKNOW'
-    }).items).to.be.deep.equal([]);
+    }).all.items).to.be.deep.equal([]);
   });
 
   it('should aggregate one item', () => {
-    expect(wall(undefined, aggregate({
+    const result =  wall(undefined, aggregate({
       text: 'hello'
-    })).items).to.be.deep.equal([
+    }));
+    expect(result.all.aggregated).to.be.equal(1);
+    expect(result.all.items).to.be.deep.equal([
       {
         text: 'hello'
       }
@@ -31,17 +33,14 @@ describe('wall reducer', () => {
   });
 
   it('should aggregate 2 items', () => {
-    const state1 = wall(undefined, aggregate({
-      text: 'hello1'
-    }));
-    expect(wall(state1, aggregate({
-      text: 'hello2'
-    })).items).to.be.deep.equal([
+    const result = aggregateMultipleTimes(2);
+    expect(result.all.aggregated).to.be.equal(2);
+    expect(result.all.items).to.be.deep.equal([
       {
-        text: 'hello1'
+        text: 'hello 0'
       },
       {
-        text: 'hello2'
+        text: 'hello 1'
       }
     ]);
   });
@@ -52,16 +51,16 @@ describe('wall reducer', () => {
 
   it('should aggregate over the limit', () => {
     const state = aggregateMultipleTimes(15);
-    expect(state.items).to.have.length(10);
-    expect(state.items[0].text).to.be.equal('hello 5');
-    expect(state.items[9].text).to.be.equal('hello 14');
+    expect(state.all.items).to.have.length(10);
+    expect(state.all.items[0].text).to.be.equal('hello 5');
+    expect(state.all.items[9].text).to.be.equal('hello 14');
   });
 
   it('should truncate when set size inferior to the current state', () => {
     const state = wall(aggregateMultipleTimes(10), setSize(5));
-    expect(state.items).to.have.length(5);
-    expect(state.items[0].text).to.be.equal('hello 5');
-    expect(state.items[4].text).to.be.equal('hello 9');
+    expect(state.all.items).to.have.length(5);
+    expect(state.all.items[0].text).to.be.equal('hello 5');
+    expect(state.all.items[4].text).to.be.equal('hello 9');
   });
 
 });
