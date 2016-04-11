@@ -1,13 +1,14 @@
 import reducer from '../../src/reducers/wall';
 import { aggregate } from '../../src/actions/wall';
-import { staticPosition } from '../../src/selectors/wall';
+import { staticPosition, twitterStaticPosition } from '../../src/selectors/wall';
 import { expect } from 'chai';
 
 describe('wall selectors', () => {
-  function aggregateMultipleTimes(n) {
+  function aggregateMultipleTimes(n, type) {
     var state;
     for (var i = 0; i < n; i++) {
       state = reducer(state, aggregate({
+        twp_source: type,
         text: 'hello ' + i
       }));
     }
@@ -42,6 +43,15 @@ describe('wall selectors', () => {
       expect(projection[1].text).to.be.equal('hello 21');
     });
 
+  });
+
+  describe('twitterStaticPosition', () => {
+    it('should rewrite the full array for twitter 2 times', () => {
+      const state = aggregateMultipleTimes(22, 'twitter');
+      const projection = twitterStaticPosition(state);
+      expect(projection[0].text).to.be.equal('hello 20');
+      expect(projection[1].text).to.be.equal('hello 21');
+    });
   });
 
 });

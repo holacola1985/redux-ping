@@ -4,10 +4,11 @@ import { expect } from 'chai';
 
 describe('wall reducer', () => {
 
-  function aggregateMultipleTimes(n){
+  function aggregateMultipleTimes(n, type) {
     var state;
-    for(var i=0; i<n; i++){
+    for (var i = 0; i < n; i++) {
       state = wall(state, aggregate({
+        twp_source: type,
         text: 'hello ' + i
       }));
     }
@@ -21,7 +22,7 @@ describe('wall reducer', () => {
   });
 
   it('should aggregate one item', () => {
-    const result =  wall(undefined, aggregate({
+    const result = wall(undefined, aggregate({
       text: 'hello'
     }));
     expect(result.all.aggregated).to.be.equal(1);
@@ -35,14 +36,8 @@ describe('wall reducer', () => {
   it('should aggregate 2 items', () => {
     const result = aggregateMultipleTimes(2);
     expect(result.all.aggregated).to.be.equal(2);
-    expect(result.all.items).to.be.deep.equal([
-      {
-        text: 'hello 0'
-      },
-      {
-        text: 'hello 1'
-      }
-    ]);
+    expect(result.all.items[0].text).to.be.equal('hello 0');
+    expect(result.all.items[1].text).to.be.equal('hello 1');
   });
 
   it('should set size', () => {
@@ -61,6 +56,25 @@ describe('wall reducer', () => {
     expect(state.all.items).to.have.length(5);
     expect(state.all.items[0].text).to.be.equal('hello 5');
     expect(state.all.items[4].text).to.be.equal('hello 9');
+  });
+
+  describe('twitter', () => {
+
+    it('should aggregate one item', () => {
+      const result = wall(undefined, aggregate({
+        twp_source: 'twitter',
+        text: 'hello'
+      }));
+      expect(result.twitter.aggregated).to.be.equal(1);
+      expect(result.twitter.items[0].text).to.be.equal('hello');
+    });
+
+    it('should aggregate 2 items', () => {
+      const result = aggregateMultipleTimes(2, 'twitter');
+      expect(result.twitter.aggregated).to.be.equal(2);
+      expect(result.twitter.items[0].text).to.be.equal('hello 0');
+      expect(result.twitter.items[1].text).to.be.equal('hello 1');
+    });
   });
 
 });
