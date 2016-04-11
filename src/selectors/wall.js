@@ -12,7 +12,7 @@ function shift(items, aggregated, size) {
 
 const pack = {};
 
-['all', 'twitter', 'facebook'].forEach(type => {
+['all', 'twitter', 'facebook', 'instagram'].forEach(type => {
   const getItems = state => state[type].items;
   const getAggregated = state => state[type].aggregated;
   pack[type] = createSelector([getItems, getAggregated, getSize], shift);

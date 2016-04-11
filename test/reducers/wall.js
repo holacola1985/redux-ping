@@ -58,7 +58,7 @@ describe('wall reducer', () => {
     expect(state.all.items[4].text).to.be.equal('hello 9');
   });
 
-  ['twitter', 'facebook'].forEach(type => {
+  ['twitter', 'facebook', 'instagram'].forEach(type => {
     describe(type, () => {
 
       it('should aggregate one item', () => {

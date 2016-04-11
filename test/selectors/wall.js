@@ -47,7 +47,7 @@ describe('wall selectors', () => {
 
   });
 
-  ['twitter', 'facebook'].forEach(type => {
+  ['twitter', 'facebook', 'instagram'].forEach(type => {
     describe(type, () => {
       it('should rewrite the full array for ' + type + ' 2 times', () => {
         const state = aggregateMultipleTimes(22, type);
