@@ -1,6 +1,6 @@
 {
   "name": "redux-ping",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Reducers for Lightping and Tweetping interfaces",
   "main": "index.js",
   "scripts": {
