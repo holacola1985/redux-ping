@@ -1,9 +1,11 @@
 {
   "name": "redux-ping",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Reducers for Lightping and Tweetping interfaces",
   "main": "index.js",
   "scripts": {
+    "prepublish": "npm run compile",
+    "compile": "babel -d lib/ src/",
     "test": "./node_modules/.bin/mocha --compilers js:babel-core/register test/**/*.js --watch",
     "dev": "./node_modules/.bin/watchify --verbose --debug -t [ babelify --presets [ es2015 react ] ] -o public/main.js -- src/js/index.jsx | ./node_modules/.bin/exorcist public/main.js.map > public/main.js ./node_modules/.bin/watch './node_modules/.bin/lessc src/less/index.less public/styles.css' src/less/"
   },
@@ -24,6 +26,7 @@
     "reselect": "^2.2.1"
   },
   "devDependencies": {
+    "babel-cli": "^6.7.5",
     "chai": "^3.5.0",
     "exorcist": "^0.4.0",
     "mocha": "^2.4.5",
