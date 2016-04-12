@@ -34,15 +34,30 @@ describe('wall reducer', () => {
     ]);
   });
 
+  it('should increase aggregate counter', () => {
+    var result = wall(undefined, aggregate({}));
+    expect(result.all.aggregated).to.be.equal(1);
+    for (var i = 2; i < 30; i++) {
+      result = wall(result, aggregate({}));
+      expect(result.all.aggregated).to.be.equal(i);
+    }
+  });
+
   it('should aggregate 2 items', () => {
     const result = aggregateMultipleTimes(2);
+    expect(result.all.aggregated).to.be.equal(2);
+    expect(result.all.items).to.have.lengthOf(2);
     expect(result.all.aggregated).to.be.equal(2);
     expect(result.all.items[0].text).to.be.equal('hello 0');
     expect(result.all.items[1].text).to.be.equal('hello 1');
   });
 
   it('should set size', () => {
-    expect(wall(undefined, setSize(5)).size).to.be.equal(5);
+    const result = wall(undefined, setSize(5));
+    expect(result.size).to.be.equal(5);
+    POST_TYPES.forEach(type => {
+      expect(result[type].aggregated).to.be.equal(0);
+    });
   });
 
   it('should aggregate over the limit', () => {
@@ -54,7 +69,8 @@ describe('wall reducer', () => {
 
   it('should truncate when set size inferior to the current state', () => {
     const state = wall(aggregateMultipleTimes(10), setSize(5));
-    expect(state.all.items).to.have.length(5);
+    expect(state.all.aggregated).to.be.equal(10);
+    expect(state.all.items).to.have.lengthOf(5);
     expect(state.all.items[0].text).to.be.equal('hello 5');
     expect(state.all.items[4].text).to.be.equal('hello 9');
   });

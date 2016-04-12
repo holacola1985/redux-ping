@@ -43,12 +43,21 @@ function aggregate(post, state) {
 export default function wall(state = defaultState, action) {
   switch (action.type) {
     case SET_SIZE:
-      return state.size === action.size ? state : Object.assign({}, state, {
-        size: action.size,
-        all: {
-          items: state.all.items.slice(-action.size)
-        }
-      });
+      if (action.size === state.size) {
+        return state;
+      } else {
+        var newState = {
+          size: action.size
+        };
+        [...POST_TYPES, 'all'].forEach(type => {
+          const {items, aggregated} = state[type];
+          newState[type] = {
+            items: items.slice(-action.size),
+            aggregated
+          };
+        });
+        return newState;
+      }
     case AGGREGATE:
       return Object.assign({}, state, aggregate(action.post, state));
     default:
