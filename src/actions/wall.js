@@ -1,5 +1,6 @@
 require('es6-promise').polyfill();
 import fetch from 'isomorphic-fetch';
+import { url as wallUrl } from '../utils/url';
 
 export const AGGREGATE = 'AGGREGATE';
 export const SET_SIZE = 'SET_SIZE';
@@ -19,14 +20,14 @@ export function setSize(size) {
   };
 }
 
-export function fetchHistory(url) {
-  return dispatch => {
-    return fetch(url).then(response => {
-      if(response.status === 404){
+export function fetchHistory(id, options) {
+  return (dispatch) => {
+    return fetch(wallUrl(id, options)).then(response => {
+      if (response.status === 404) {
         return [];
-      }else if(response.status >= 400){
+      } else if (response.status >= 400) {
         throw new Error('Fetch wall history error');
-      }else{
+      } else {
         return response.json();
       }
     }).then(posts => {
