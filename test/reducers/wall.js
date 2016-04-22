@@ -9,7 +9,7 @@ describe('wall reducer', () => {
     var state;
     for (var i = 0; i < n; i++) {
       state = wall(state, aggregate({
-        twp_source: type,
+        _source: type,
         text: 'hello ' + i
       }));
     }
@@ -29,7 +29,7 @@ describe('wall reducer', () => {
   it('should aggregate one item', () => {
     const result = wall(undefined, aggregate({
       text: 'hello',
-      twp_source: 'twitter'
+      _source: 'twitter'
     }));
     expect(result.all.aggregated).to.be.equal(1);
     expect(result.twitter.aggregated).to.be.equal(1);
@@ -37,13 +37,13 @@ describe('wall reducer', () => {
     expect(result.all.items).to.be.deep.equal([
       {
         text: 'hello',
-        twp_source: 'twitter'
+        _source: 'twitter'
       }
     ]);
     expect(result.twitter.items).to.be.deep.equal([
       {
         text: 'hello',
-        twp_source: 'twitter'
+        _source: 'twitter'
       }
     ]);
     expect(result.facebook.items).to.be.deep.equal([]);
@@ -52,12 +52,12 @@ describe('wall reducer', () => {
 
   it('should increase aggregate counter', () => {
     var result = wall(undefined, aggregate({
-      twp_source: 'instagram'
+      _source: 'instagram'
     }));
     expect(result.all.aggregated).to.be.equal(1);
     for (var i = 2; i < 30; i++) {
       result = wall(result, aggregate({
-        twp_source: 'twitter'
+        _source: 'twitter'
       }));
       expect(result.all.aggregated).to.be.equal(i);
       expect(result.twitter.aggregated).to.be.equal(i - 1);
@@ -89,7 +89,7 @@ describe('wall reducer', () => {
 
       it('should aggregate one item', () => {
         const result = wall(undefined, aggregate({
-          twp_source: type,
+          _source: type,
           text: 'hello'
         }));
         expect(result[type].aggregated).to.be.equal(1);
@@ -121,6 +121,18 @@ describe('wall reducer', () => {
       });
 
     });
+  });
+
+
+  it.skip('should aggregate multiple post type', () => {
+    var state = wall(undefined, setSize(10));    
+    state = wall(state, aggregateMultipleTimes(2, 'tweet'));
+    state = wall(aggregateMultipleTimes(3, 'facebook'));
+    state = wall(aggregateMultipleTimes(4, 'instagram'));
+    expect(state.all.items).to.have.lengthOf(9);
+    expect(state.all.tweet).to.have.lengthOf(2);
+    expect(state.all.facebook).to.have.lengthOf(3);
+    expect(state.all.instagram).to.have.lengthOf(4);
   });
 
 });

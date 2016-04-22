@@ -1,6 +1,6 @@
 /* global Set */
 import { POST_TYPES } from '../postTypes';
-import { SET_SIZE, AGGREGATE } from '../actions/wall';
+import { SET_SIZE, AGGREGATE, FETCH_WALL_HISTORY } from '../actions/wall';
 
 const supportedTypes = new Set();
 
@@ -22,7 +22,7 @@ POST_TYPES.forEach(type => {
 
 
 function aggregate(post, state) {
-  const type = post.twp_source;
+  const type = post._source;
   var newState = {
     all: {
       aggregated: state.all.aggregated + 1,
@@ -60,6 +60,10 @@ export default function wall(state = defaultState, action) {
       }
     case AGGREGATE:
       return Object.assign({}, state, aggregate(action.post, state));
+    case FETCH_WALL_HISTORY:
+      return action.list.reduce((memo, post) => {
+        return Object.assign({}, memo, aggregate(post, memo));
+      }, state);
     default:
       return state;
 

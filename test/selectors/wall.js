@@ -11,7 +11,7 @@ describe('wall selectors', () => {
     var state;
     for (var i = 0; i < n; i++) {
       state = reducer(state, aggregate({
-        twp_source: type,
+        _source: type,
         text: 'hello ' + i
       }));
     }
