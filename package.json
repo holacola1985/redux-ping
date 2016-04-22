@@ -6,8 +6,8 @@
   "scripts": {
     "prepublish": "npm run compile",
     "compile": "babel -d lib/ src/",
-    "test": "./node_modules/.bin/mocha --compilers js:babel-core/register test/**/*.js --watch",
-    "dev": "./node_modules/.bin/watchify --verbose --debug -t [ babelify --presets [ es2015 react ] ] -o public/main.js -- src/js/index.jsx | ./node_modules/.bin/exorcist public/main.js.map > public/main.js ./node_modules/.bin/watch './node_modules/.bin/lessc src/less/index.less public/styles.css' src/less/"
+    "test": "mocha --compilers js:babel-core/register test/**/*.js --watch",
+    "dev": "npm run compile -- --watch"
   },
   "keywords": [
     "redux",
@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.7.5",
+    "babel-preset-react": "^6.5.0",
     "chai": "^3.5.0",
     "exorcist": "^0.4.0",
     "mocha": "^2.4.5",
