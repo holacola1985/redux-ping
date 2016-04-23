@@ -1,6 +1,6 @@
 require('es6-promise').polyfill();
 import fetch from 'isomorphic-fetch';
-import { url as wallUrl } from '../utils/url';
+import { wall as wallUrl } from '../utils/url';
 
 export const AGGREGATE = 'AGGREGATE';
 export const SET_SIZE = 'SET_SIZE';
@@ -21,7 +21,10 @@ export function setSize(size) {
 }
 
 export function fetchHistory(id, options) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    if(!options.size){
+      options.size = getState().wall.size;
+    }
     return fetch(wallUrl(id, options)).then(response => {
       if (response.status === 404) {
         return [];
