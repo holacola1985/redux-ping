@@ -61,7 +61,7 @@ export default function wall(state = defaultState, action) {
     case AGGREGATE:
       return Object.assign({}, state, aggregate(action.post, state));
     case FETCH_WALL_HISTORY:
-      return action.list.reduce((memo, post) => {
+      return action.posts.reduce((memo, post) => {
         return Object.assign({}, memo, aggregate(post, memo));
       }, state);
     default:
