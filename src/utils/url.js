@@ -11,7 +11,7 @@ export function wall(streamId, options = {}) {
   const urlFormatOptions = {
     hostname: options.hostname || defaultOptions.hostname,
     protocol: options.protocol || defaultOptions.protocol,
-    pathname: join('data/stream', streamId.toString(), 'wall', type || ''),
+    pathname: options.pathname || join('data/stream', streamId.toString(), 'wall/', type || ''),
     port
   };
 
