@@ -1,6 +1,6 @@
 /* global Set */
 import { POST_TYPES } from '../postTypes';
-import { SET_SIZE, AGGREGATE, FETCH_WALL_HISTORY } from '../actions/wall';
+import { SET_WALL_SIZE, AGGREGATE_WALL, FETCH_WALL_HISTORY } from '../actions/wall';
 
 const supportedTypes = new Set();
 
@@ -42,7 +42,7 @@ function aggregate(post, state) {
 
 export default function wall(state = defaultState, action) {
   switch (action.type) {
-    case SET_SIZE:
+    case SET_WALL_SIZE:
       if (action.size === state.size) {
         return state;
       } else {
@@ -58,7 +58,7 @@ export default function wall(state = defaultState, action) {
         });
         return newState;
       }
-    case AGGREGATE:
+    case AGGREGATE_WALL:
       return Object.assign({}, state, aggregate(action.post, state));
     case FETCH_WALL_HISTORY:
       return action.posts.reduce((memo, post) => {
