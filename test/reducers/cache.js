@@ -38,7 +38,7 @@ describe('cache', () => {
     }));
     expect(byId).to.have.property('123');
     expect(ids[0]).to.be.equal(123);
-    expect(byId['123'].text).to.be.equal('yolo');
+    expect(byId['123'].wall.text).to.be.equal('yolo');
   });
 
   it('should aggregate two post', () => {
@@ -46,7 +46,7 @@ describe('cache', () => {
     expect(byId).to.have.property('0');
     expect(byId).to.have.property('1');
     expect(ids[1]).to.be.equal(1);
-    expect(byId['1'].text).to.be.equal('text 1');
+    expect(byId['1'].wall.text).to.be.equal('text 1');
   });
 
   it('should set the cache size', () => {

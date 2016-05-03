@@ -1,0 +1,3 @@
+
+
+export const FETCH_GEO_HISTORY = 'FETCH_GEO_HISTORY';

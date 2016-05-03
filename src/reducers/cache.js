@@ -2,17 +2,23 @@
 import { AGGREGATE_WALL } from '../actions/wall';
 import { SET_CACHE_SIZE } from '../actions/cache';
 
-function aggregate(state, post) {
+
+function wrap(key, content){
+  const obj = {};
+  obj[key] = content;
+  return obj;
+}
+
+function aggregate(state, post, namespace) {
+  const exists = state.byId[post._id] !== undefined; 
+  const agg = Object.assign({}, state.byId[post._id],  wrap(namespace, post));
   const {size, ids, byId} = state;
-  var wrapped = {};
-  //console.log(ids, post);
-  wrapped[post._id] = post;
   var newState = Object.assign({
-    byId: Object.assign({}, byId, wrapped),
-    ids: [...ids, post._id],
+    byId: Object.assign({}, byId, wrap(post._id, agg)),
+    ids: exists ? ids : [...ids, post._id],
     size
   });
-  while(newState.ids.length > size){
+  while(!exists && newState.ids.length > size){
     newState = remove(newState);
   }
   return newState;
@@ -40,7 +46,7 @@ const defaultValue = {
 export function cache(state = defaultValue, action) {
   switch (action.type) {
     case AGGREGATE_WALL:
-      return aggregate(state, action.post);
+      return aggregate(state, action.post, 'wall');
     case SET_CACHE_SIZE:
       return Object.assign({}, state, {
         size: action.size
