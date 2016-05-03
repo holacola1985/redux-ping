@@ -1,6 +1,7 @@
 import { cache } from '../../src/reducers/cache';
 import { setSize } from '../../src/actions/cache';
 import { aggregate } from '../../src/actions/wall';
+import { aggregate as aggregateGeo } from '../../src/actions/geo';
 import { expect } from 'chai';
 
 describe('cache', () => {
@@ -63,6 +64,29 @@ describe('cache', () => {
     expect(state.byId).to.not.have.property(4);
     expect(state.byId).to.have.property(5);
     expect(state.byId).to.have.property(9);
+  });
+
+  it('should aggregate merge data from different sources on same post', () => {
+    var state = cache(undefined, aggregateGeo({
+      _id: 123,
+      geojson: {
+        type: 'Point',
+        coordinates: [-5, 12.3]
+      }
+    }));
+
+    state = cache(state, aggregate({
+      _id: 123,
+      text: 'yolo'
+    }));
+
+    const {byId, ids} = state;
+
+    expect(byId).to.have.property('123');
+    expect(ids).to.have.lengthOf(1);
+    expect(ids[0]).to.be.equal(123);
+    expect(byId['123'].wall.text).to.be.equal('yolo');
+    expect(byId['123'].geo.geojson.coordinates[0]).to.be.equal(-5);
   });
 
 });
