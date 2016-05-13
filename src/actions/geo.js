@@ -4,6 +4,7 @@ import { fetchJSON } from '../utils/network';
 export const FETCH_GEO_HISTORY = 'FETCH_GEO_HISTORY';
 export const AGGREGATE_GEO = 'AGGREGATE_GEO';
 export const SET_GEO_SIZE = 'SET_GEO_SIZE';
+export const CLEAR_GEO = 'CLEAR_GEO';
 
 export function aggregate(post) {
   return {
@@ -31,4 +32,10 @@ export function fetchHistory(id, options_) {
       });
     });
   };
+}
+
+export function clear() {
+  return {
+    type: CLEAR_GEO
+  }
 }

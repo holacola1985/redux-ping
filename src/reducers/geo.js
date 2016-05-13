@@ -1,4 +1,4 @@
-import { SET_GEO_SIZE, FETCH_GEO_HISTORY } from '../actions/geo';
+import { SET_GEO_SIZE, FETCH_GEO_HISTORY, CLEAR_GEO } from '../actions/geo';
 
 const defaultState = {
   size: 20,
@@ -15,6 +15,10 @@ export default function geo(state = defaultState, action) {
     case FETCH_GEO_HISTORY:
       return Object.assign({}, state, {
         all: posts
+      });
+    case CLEAR_GEO:
+      return Object.assign({}, state, {
+        all: []
       });
     default:
       return state;
